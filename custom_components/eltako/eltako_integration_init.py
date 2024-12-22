@@ -206,7 +206,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         frontend_url_path="eltako",  # URL in the sidebar
         
         config={
-            "url": "/eltako/index.html"  # URL served by the view
+            "url": "http://localhost:5173"  # URL served by the view
         },
     )
 
