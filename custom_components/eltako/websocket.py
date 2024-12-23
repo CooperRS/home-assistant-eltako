@@ -1,10 +1,11 @@
 from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.components import websocket_api
 
 
-def register_websockets(hass: HomeAssistant, config: ConfigEntry):
-    hass.components.websocket_api.async_register_command(handle_ws_info)
+async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
+    websocket_api.async_register_command(hass, ws_info)
 
 
 @websocket_api.websocket_command({
@@ -12,7 +13,7 @@ def register_websockets(hass: HomeAssistant, config: ConfigEntry):
     'required': []
 })
 @websocket_api.async_response
-async def handle_ws_info(hass: HomeAssistant, connection, msg):
+async def ws_info(hass: HomeAssistant, connection, msg):
     
     response = {
         'info': 'info-message'

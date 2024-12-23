@@ -192,7 +192,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     hass.data[DATA_ELTAKO][DATA_ENTITIES] = {}
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
 
-    register_websockets(hass, config_entry)
+    await register_websockets(hass, config_entry)
 
     hass.http.register_static_path(
         "/eltako",
