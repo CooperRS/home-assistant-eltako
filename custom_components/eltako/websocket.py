@@ -17,7 +17,8 @@ def _get_manifest_info():
         with open("manifest.json", "r") as file:
             response = json.load(file)
             LOGGER.info(f"info response: {response}")
-    except:
+    except Exception as e:
+        LOGGER.error("Cannot read manifest.json")
         response = {}
 
 @websocket_api.websocket_command({
