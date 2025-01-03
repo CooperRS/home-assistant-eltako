@@ -1,5 +1,5 @@
 import json
-import logging
+from .const import *
 
 from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant
@@ -16,7 +16,7 @@ def _get_manifest_info():
     try:
         with open("manifest.json", "r") as file:
             response = json.load(file)
-            logging.getLogger("eltako").info(f"info response: {response}")
+            LOGGER.info(f"info response: {response}")
     except:
         response = {}
 
@@ -27,6 +27,8 @@ def _get_manifest_info():
 @websocket_api.async_response
 async def ws_info(hass: HomeAssistant, connection, msg):
     
+    LOGGER.debug("Call WS eltako/info")
+
     response = await hass.async_add_executor_job(_get_manifest_info)
 
     # Send the response back
