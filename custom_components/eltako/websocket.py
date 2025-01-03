@@ -31,5 +31,7 @@ async def ws_info(hass: HomeAssistant, connection, msg):
 
     response = await hass.async_add_executor_job(_get_manifest_info)
 
+    LOGGER.debug(f"version {response['version']}")
+
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
