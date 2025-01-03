@@ -16,7 +16,7 @@ def _get_manifest_info():
     try:
         with open("manifest.json", "r") as file:
             response = json.load(file)
-            logging.getLogger().info(f"info response: {response}")
+            logging.getLogger("eltako").info(f"info response: {response}")
     except:
         response = {}
 
