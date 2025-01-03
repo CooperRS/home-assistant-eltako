@@ -1,3 +1,5 @@
+import json
+
 from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
@@ -9,15 +11,18 @@ async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
 
 
 @websocket_api.websocket_command({
-    'type': 'info',
+    'type': 'eltako/info',
     'required': []
 })
 @websocket_api.async_response
 async def ws_info(hass: HomeAssistant, connection, msg):
     
-    response = {
-        'info': 'info-message'
-    }
+    try:
+        with open("manifest.json", "r") as file:
+            response = json.load(file)
+    except:
+        response = {}
+    
 
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
