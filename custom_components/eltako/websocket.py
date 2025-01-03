@@ -22,6 +22,8 @@ def _get_manifest_info():
         LOGGER.error("Cannot read manifest.json", exc_info=True, stack_info=True)
         response = {}
 
+    return response
+
 
 @websocket_api.websocket_command({
     'type': 'eltako/info',
@@ -34,7 +36,7 @@ async def ws_info(hass: HomeAssistant, connection, msg):
 
     response = await hass.async_add_executor_job(_get_manifest_info)
 
-    LOGGER.info(f"info response: {response}")
+    LOGGER.debug(f"version {response['version']}")
 
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
