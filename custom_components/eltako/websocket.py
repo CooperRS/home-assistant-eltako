@@ -13,15 +13,15 @@ async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
 
 
 def _get_manifest_info():
-
     try:
         dir_path = os.path.dirname(__file__)
-        with open(os.path.join(dir_path, "manifest.json", "r") as file:
+        with open(os.path.join(dir_path, "manifest.json"), "r") as file:
             response = json.load(file)
             LOGGER.info(f"info response: {response}")
     except Exception as e:
         LOGGER.error("Cannot read manifest.json", exc_info=True, stack_info=True)
         response = {}
+
 
 @websocket_api.websocket_command({
     'type': 'eltako/info',
