@@ -1,4 +1,5 @@
 import json
+import logging
 
 from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant
@@ -20,6 +21,7 @@ async def ws_info(hass: HomeAssistant, connection, msg):
     try:
         with open("manifest.json", "r") as file:
             response = json.load(file)
+            logging.getLogger().info(f"info response: {response}")
     except:
         response = {}
     
