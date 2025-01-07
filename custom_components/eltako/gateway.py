@@ -371,7 +371,6 @@ class EnOceanGateway:
                     self._bus.send(msg)
                 )
                 dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': msg})
-                self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID+"_received_msg", {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'esp2_msg': msg})
         else:
             LOGGER.warning("[Gateway] [Id: %d] Serial port %s is not available!!! message (%s) was not sent.", self.dev_id, self.serial_path, msg)
 
@@ -412,6 +411,7 @@ class EnOceanGateway:
 
                     LOGGER.debug("[Gateway] [Id: %d] Forwared message (%s) in global bus", self.dev_id, global_msg)
                     dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': global_msg})
+                    self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'esp2_msg': global_msg})
             
     
     @property
