@@ -347,7 +347,6 @@ class EnOceanGateway:
         event_id = config_helpers.get_bus_event_type(gateway_id=self.dev_id, function_id=SIGNAL_SEND_MESSAGE)
         dispatcher_send(self.hass, event_id, msg)
         dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': msg})
-        self.hass.bus.fire("eltako_event_test", {'msg': 'test'})
 
 
     def unload(self):
@@ -372,6 +371,7 @@ class EnOceanGateway:
                     self._bus.send(msg)
                 )
                 dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': msg})
+                self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID+"_received_msg", {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'esp2_msg': msg})
         else:
             LOGGER.warning("[Gateway] [Id: %d] Serial port %s is not available!!! message (%s) was not sent.", self.dev_id, self.serial_path, msg)
 
