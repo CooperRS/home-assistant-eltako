@@ -350,7 +350,7 @@ class EltakoBinarySensor(AbstractBinarySensor):
             event_data['prev_pressed_buttons'] = prev_pressed_buttons
         # when button released
         if not event_data['pressed']:
-            push_telegram_received_time = self.LAST_RECEIVED_TELEGRAMS[ b2s(self.dev_id), {'push_telegram_received_time_in_sec': -1}]['push_telegram_received_time_in_sec']
+            push_telegram_received_time = self.LAST_RECEIVED_TELEGRAMS.get(b2s(self.dev_id), {'push_telegram_received_time_in_sec': -1})['push_telegram_received_time_in_sec']
             release_telegram_received_time = telegram_received_time
             pushed_duration = float(release_telegram_received_time - push_telegram_received_time)
 
