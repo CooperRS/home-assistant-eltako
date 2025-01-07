@@ -411,7 +411,7 @@ class EnOceanGateway:
 
                     LOGGER.debug("[Gateway] [Id: %d] Forwared message (%s) in global bus", self.dev_id, global_msg)
                     dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': global_msg})
-                    self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'msg': { 'type': type(global_msg).__str__, 'data': b2s(global_msg.data), 'address': b2s(global_msg.address), 'status': global_msg.status }})
+                    self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'msg': str(global_msg)}})
             
     
     @property
