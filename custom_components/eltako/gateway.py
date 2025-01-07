@@ -347,7 +347,7 @@ class EnOceanGateway:
         event_id = config_helpers.get_bus_event_type(gateway_id=self.dev_id, function_id=SIGNAL_SEND_MESSAGE)
         dispatcher_send(self.hass, event_id, msg)
         dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': msg})
-        self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': msg})
+        self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self.dev_name, 'esp2_msg': msg})
 
 
     def unload(self):
