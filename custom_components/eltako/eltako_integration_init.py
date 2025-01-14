@@ -38,12 +38,12 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     await register_websockets(hass, config)
 
-    hass.http.register_static_path(
-        "/eltako",
-        # hass.config.path("custom_components/eltako/frontend/index.html"),
-        os.path.join(os.path.dirname(__file__), "frontend"),
-        cache_headers=False,
-    )
+    # hass.http.register_static_path(
+    #     "/eltako",
+    #     # hass.config.path("custom_components/eltako/frontend/index.html"),
+    #     os.path.join(os.path.dirname(__file__), "frontend"),
+    #     cache_headers=False,
+    # )
 
     # Register the sidebar panel
     hass.components.frontend.async_register_built_in_panel(
@@ -55,6 +55,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         config={
             "url": "http://localhost:5173"  # URL served by the view
         },
+        require_admin=True,
     )
 
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
