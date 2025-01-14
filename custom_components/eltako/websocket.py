@@ -6,7 +6,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.components import websocket_api
 
-from gateway import detect
+from .gateway import detect
 
 
 async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
