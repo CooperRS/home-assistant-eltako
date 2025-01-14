@@ -33,6 +33,30 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     # Migrage existing gateway configs / ESP2 was removed in the name
     migrate_old_gateway_descriptions(hass)
 
+
+    LOGGER.info("f[{LOG_PREFIX_INIT}] register websocket extension.")
+
+    await register_websockets(hass, config)
+
+    hass.http.register_static_path(
+        "/eltako",
+        # hass.config.path("custom_components/eltako/frontend/index.html"),
+        os.path.join(os.path.dirname(__file__), "frontend"),
+        cache_headers=False,
+    )
+
+    # Register the sidebar panel
+    hass.components.frontend.async_register_built_in_panel(
+        component_name="iframe",  # Use iframe to embed the view
+        sidebar_title="Eltako",  # Title in the sidebar
+        sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
+        frontend_url_path="eltako",  # URL in the sidebar
+        
+        config={
+            "url": "http://localhost:5173"  # URL served by the view
+        },
+    )
+
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
 
     return True
@@ -191,27 +215,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
     hass.data[DATA_ELTAKO][DATA_ENTITIES] = {}
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
-
-    await register_websockets(hass, config_entry)
-
-    hass.http.register_static_path(
-        "/eltako",
-        # hass.config.path("custom_components/eltako/frontend/index.html"),
-        os.path.join(os.path.dirname(__file__), "frontend"),
-        cache_headers=False,
-    )
-
-    # Register the sidebar panel
-    hass.components.frontend.async_register_built_in_panel(
-        component_name="iframe",  # Use iframe to embed the view
-        sidebar_title="Eltako",  # Title in the sidebar
-        sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
-        frontend_url_path="eltako",  # URL in the sidebar
-        
-        config={
-            "url": "http://localhost:5173"  # URL served by the view
-        },
-    )
 
 
     return True
