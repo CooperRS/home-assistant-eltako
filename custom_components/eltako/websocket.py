@@ -6,6 +6,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.components import websocket_api
 
+from gateway import detect
+
 
 async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
     websocket_api.async_register_command(hass, ws_info)
@@ -34,6 +36,20 @@ async def ws_info(hass: HomeAssistant, connection, msg):
     # LOGGER.debug("Call WS eltako/info")
 
     response = await hass.async_add_executor_job(_get_manifest_info)
+
+    # Send the response back
+    connection.send_message(websocket_api.result_message(msg['id'], response))
+
+@websocket_api.websocket_command({
+    'type': 'eltako/potential_usb_ports',
+    'required': []
+})
+@websocket_api.async_response
+async def ws_info(hass: HomeAssistant, connection, msg):
+    
+    # LOGGER.debug("Call WS eltako/info")
+
+    response = await hass.async_add_executor_job(detect)
 
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
