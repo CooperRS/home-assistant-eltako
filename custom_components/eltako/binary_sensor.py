@@ -173,6 +173,10 @@ class EltakoBinarySensor(AbstractBinarySensor):
         event_id = config_helpers.get_bus_event_type(self.gateway.dev_id, EVENT_BUTTON_PRESSED, msg.address)
         event_data = {
             "id": event_id,
+            "gateway": {
+                "name": self.gateway.dev_name,
+                "id": self.gateway.dev_id
+            },
             "entity_id": self.entity_id,
             "data": int.from_bytes(msg.data, "big"),
             "eep": self.dev_eep.eep_string,

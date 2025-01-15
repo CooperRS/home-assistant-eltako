@@ -411,7 +411,9 @@ class EnOceanGateway:
 
                     LOGGER.debug("[Gateway] [Id: %d] Forwared message (%s) in global bus", self.dev_id, global_msg)
                     dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': global_msg})
-                    self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'msg': str(global_msg)})
+                    
+                    # events are only fired for frontend
+                    self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'msg': config_helpers.telegram2json(global_msg)})
             
     
     @property

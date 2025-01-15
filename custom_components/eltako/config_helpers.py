@@ -4,6 +4,7 @@ from homeassistant.helpers.typing import ConfigType
 from homeassistant.const import CONF_DEVICES, CONF_NAME, CONF_ID
 
 from eltakobus.util import AddressExpression, b2a, b2s
+from eltakobus.message import EltakoMessage
 from eltakobus.eep import EEP
 
 from .const import *
@@ -236,3 +237,18 @@ def convert_button_abbreviation(buttons:list[str]) -> list[str]:
 
 def button_abbreviation_to_str(buttons:list[str]) -> list[str]:
     return ', '.join(convert_button_abbreviation(buttons))
+
+def telegram2json(telegram: EltakoMessage) -> dict:
+    result = {}
+    result['msg_type'] = telegram.__class__.__name__
+    if hasattr(telegram, 'address'): result['address'] = b2s(telegram.address)
+    if hasattr(telegram, 'org'): result['org'] = b2s(telegram.org)
+    if hasattr(telegram, 'is_request'): result['is_request'] = telegram.is_request
+    if hasattr(telegram, 'data'): result['data'] = b2s(telegram.data)
+    if hasattr(telegram, 'payload'): result['payload'] = b2s(telegram.payload)
+    if hasattr(telegram, 'reported_address'): result['reported_address'] = b2s(telegram.reported_address)
+    if hasattr(telegram, 'reported_size'): result['reported_size'] = telegram.reported_size
+    if hasattr(telegram, 'memory_size'): result['memory_size'] = telegram.memory_size
+    if hasattr(telegram, 'model'): result['model'] = b2s(telegram.model)
+    if hasattr(telegram, 'is_fam'): result['is_fam'] = telegram.is_fam
+    if hasattr(telegram, 'row'): result['row'] = telegram.row

@@ -26,6 +26,13 @@ def _get_manifest_info():
 
     return response
 
+def _get_configured_gateways(hass: HomeAssistant):
+    result = []
+    for k in hass.data[DATA_ELTAKO]:
+        if k.startswith('gateway'):
+            result.append(hass.data[DATA_ELTAKO][k])
+    return result
+
 
 @websocket_api.websocket_command({
     'type': 'eltako/info',
@@ -50,6 +57,18 @@ async def ws_info(hass: HomeAssistant, connection, msg):
 async def ws_usb_ports(hass: HomeAssistant, connection, msg):
     
     response = await hass.async_add_executor_job(detect)
+
+    # Send the response back
+    connection.send_message(websocket_api.result_message(msg['id'], response))
+
+@websocket_api.websocket_command({
+    'type': 'eltako/configured_gateways',
+    'required': []
+})
+@websocket_api.async_response
+async def ws_configured_gateways(hass: HomeAssistant, connection, msg):
+    
+    response = await _get_configured_gateways(hass)
 
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
