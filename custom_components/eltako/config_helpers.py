@@ -242,7 +242,7 @@ def telegram2json(telegram: EltakoMessage) -> dict:
     result = {}
     result['msg_type'] = telegram.__class__.__name__
     if hasattr(telegram, 'address'): result['address'] = b2s(telegram.address)
-    if hasattr(telegram, 'org'): result['org'] = b2s(telegram.org)
+    if hasattr(telegram, 'org'): result['org'] = telegram.org
     if hasattr(telegram, 'is_request'): result['is_request'] = telegram.is_request
     if hasattr(telegram, 'data'): result['data'] = b2s(telegram.data)
     if hasattr(telegram, 'payload'): result['payload'] = b2s(telegram.payload)
