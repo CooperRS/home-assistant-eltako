@@ -12,6 +12,7 @@ from .gateway import detect
 async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
     websocket_api.async_register_command(hass, ws_info)
     websocket_api.async_register_command(hass, ws_usb_ports)
+    websocket_api.async_register_command(hass, ws_configured_gateways)
 
 
 def _get_manifest_info():

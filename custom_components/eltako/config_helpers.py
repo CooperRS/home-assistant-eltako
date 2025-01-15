@@ -252,3 +252,5 @@ def telegram2json(telegram: EltakoMessage) -> dict:
     if hasattr(telegram, 'model'): result['model'] = b2s(telegram.model)
     if hasattr(telegram, 'is_fam'): result['is_fam'] = telegram.is_fam
     if hasattr(telegram, 'row'): result['row'] = telegram.row
+
+    return result
