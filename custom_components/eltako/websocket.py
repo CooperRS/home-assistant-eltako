@@ -62,6 +62,7 @@ async def ws_usb_ports(hass: HomeAssistant, connection, msg):
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
 
+
 @websocket_api.websocket_command({
     'type': 'eltako/configured_gateways',
     'required': []
@@ -69,7 +70,7 @@ async def ws_usb_ports(hass: HomeAssistant, connection, msg):
 @websocket_api.async_response
 async def ws_configured_gateways(hass: HomeAssistant, connection, msg):
     
-    response = await _get_configured_gateways(hass)
+    response = _get_configured_gateways(hass)
 
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
