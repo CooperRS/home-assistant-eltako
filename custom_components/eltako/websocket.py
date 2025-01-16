@@ -6,7 +6,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.components import websocket_api
 
-from .gateway import detect
+from .gateway import detect, EnOceanGateway
 
 
 async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
@@ -31,7 +31,13 @@ def _get_configured_gateways(hass: HomeAssistant):
     result = []
     for k in hass.data[DATA_ELTAKO]:
         if k.startswith('gateway'):
-            result.append(hass.data[DATA_ELTAKO][k])
+            gw:EnOceanGateway = hass.data[DATA_ELTAKO][k]
+            result.append({
+                "name": gw.dev_name,
+                "id": gw.dev_id,
+                "type": str(gw.dev_type),
+                "config_entry_id": gw.config_entry_id,
+            })
     return result
 
 
