@@ -37,6 +37,14 @@ def _get_configured_gateways(hass: HomeAssistant):
                 "id": gw.dev_id,
                 "type": str(gw.dev_type),
                 "config_entry_id": gw.config_entry_id,
+                "unique_id": gw.unique_id,
+                "baud_rate": gw.baud_rate,
+                "serial_path": gw.serial_path,
+                "base_id": gw.base_id,
+                "model": gw.model,
+                "auto_reconnect": gw.is_auto_reconnect_enabled,
+                "message_delay": gw.message_delay,
+                "native_protocol": gw.native_protocol
             })
     return result
 
