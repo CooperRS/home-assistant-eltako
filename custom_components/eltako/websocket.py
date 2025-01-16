@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.components import websocket_api
 
 from .gateway import detect, EnOceanGateway
+from eltakobus.util import b2s
 
 
 async def register_websockets(hass: HomeAssistant, config: ConfigEntry):
@@ -40,7 +41,7 @@ def _get_configured_gateways(hass: HomeAssistant):
                 "unique_id": gw.unique_id,
                 "baud_rate": gw.baud_rate,
                 "serial_path": gw.serial_path,
-                "base_id": gw.base_id,
+                "base_id": b2s(gw.base_id),
                 "model": gw.model,
                 "auto_reconnect": gw.is_auto_reconnect_enabled,
                 "message_delay": gw.message_delay,
