@@ -45,18 +45,22 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     #     cache_headers=False,
     # )
 
-    # Register the sidebar panel
-    hass.components.frontend.async_register_built_in_panel(
-        component_name="iframe",  # Use iframe to embed the view
-        sidebar_title="Eltako",  # Title in the sidebar
-        sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
-        frontend_url_path="eltako",  # URL in the sidebar
-        
-        config={
-            "url": "http://localhost:5173"  # URL served by the view
-        },
-        require_admin=True,
+    hass.http.register_view(InfoPageView())
+
     )
+
+    # Register the sidebar panel
+    # hass.components.frontend.async_register_built_in_panel(
+    #     component_name="iframe",  # Use iframe to embed the view
+    #     sidebar_title="Eltako",  # Title in the sidebar
+    #     sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
+    #     frontend_url_path="eltako",  # URL in the sidebar
+        
+    #     config={
+    #         "url": "http://localhost:5173"  # URL served by the view
+    #     },
+    #     require_admin=True,
+    # )
 
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
 
