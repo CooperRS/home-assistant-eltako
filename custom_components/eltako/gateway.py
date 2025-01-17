@@ -384,6 +384,7 @@ class EnOceanGateway:
 
         if type(message) not in [EltakoPoll]:
             LOGGER.debug("[Gateway] [Id: %d] Received message: %s", self.dev_id, message)
+            local_message = None
             self.report_message_stats()
 
             if message.body[:2] == b'\x8b\x98':
@@ -406,6 +407,7 @@ class EnOceanGateway:
                     if type(message) in [EltakoWrappedRPS, EltakoWrapped4BS, RPSMessage, Regular1BSMessage, Regular4BSMessage, EltakoMessage]:
                         address = AddressExpression((message.body[6:10], None))
                         if address.is_local_address():
+                            local_message = message
                             address = address.add(self.base_id)
                             global_msg = prettify(ESP2Message( message.body[:8] + address[0] + message.body[12:] ))
 
@@ -413,7 +415,7 @@ class EnOceanGateway:
                     dispatcher_send(self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway':self, 'esp2_msg': global_msg})
                     
                     # events are only fired for frontend
-                    self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'msg': config_helpers.telegram2json(global_msg)})
+                    self.hass.bus.fire(ELTAKO_GLOBAL_EVENT_BUS_ID, {'gateway': {'name': self.dev_name, 'id': self.dev_id}, 'msg': config_helpers.telegram2json(global_msg, local_message)})
             
     
     @property

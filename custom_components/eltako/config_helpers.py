@@ -238,7 +238,7 @@ def convert_button_abbreviation(buttons:list[str]) -> list[str]:
 def button_abbreviation_to_str(buttons:list[str]) -> list[str]:
     return ', '.join(convert_button_abbreviation(buttons))
 
-def telegram2json(telegram: EltakoMessage) -> dict:
+def telegram2json(telegram: EltakoMessage, local_telegram: EltakoMessage = None) -> dict:
     result = {}
     result['msg_type'] = telegram.__class__.__name__
     if hasattr(telegram, 'address'): 
@@ -254,5 +254,9 @@ def telegram2json(telegram: EltakoMessage) -> dict:
     if hasattr(telegram, 'model'): result['model'] = b2s(telegram.model)
     if hasattr(telegram, 'is_fam'): result['is_fam'] = telegram.is_fam
     if hasattr(telegram, 'row'): result['row'] = telegram.row
+
+    if local_telegram and hasattr(local_telegram, 'address'):
+        if isinstance(local_telegram.address, int): result['local_address'] = local_telegram.address
+        else: result['local_address'] = b2s(local_telegram.address)
 
     return result
