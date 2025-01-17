@@ -47,8 +47,20 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     hass.http.register_view(InfoPageView())
 
-
     # Register the sidebar panel
+    hass.components.frontend.async_register_built_in_panel(
+        hass,
+        component_name="iframe",  # Use "iframe" to embed the custom view
+        sidebar_title="Eltako",  # Title shown in the sidebar
+        sidebar_icon="mdi:bus-electric",  # Icon for the sidebar
+        frontend_url_path="",  # URL path for the sidebar
+        config={
+            "url": "/eltako"  # Path to your custom view
+        },
+        require_admin=True  # Whether the panel requires admin privileges
+    )
+        
+
     # hass.components.frontend.async_register_built_in_panel(
     #     component_name="iframe",  # Use iframe to embed the view
     #     sidebar_title="Eltako",  # Title in the sidebar
