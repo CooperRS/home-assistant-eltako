@@ -47,7 +47,6 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     hass.http.register_view(InfoPageView())
 
-    )
 
     # Register the sidebar panel
     # hass.components.frontend.async_register_built_in_panel(
