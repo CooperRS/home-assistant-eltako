@@ -45,32 +45,32 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     #     cache_headers=False,
     # )
 
-    hass.http.register_view(InfoPageView())
+    # hass.http.register_view(InfoPageView())
 
-    # Register the sidebar panel
-    hass.components.frontend.async_register_built_in_panel(
-        component_name="iframe",  # Use "iframe" to embed the custom view
-        sidebar_title="Eltako",  # Title shown in the sidebar
-        sidebar_icon="mdi:bus-electric",  # Icon for the sidebar
-        frontend_url_path="",  # URL path for the sidebar
-        config={
-            "url": "/eltako"  # Path to your custom view
-        },
-        require_admin=True  # Whether the panel requires admin privileges
-    )
-        
-
+    # # Register the sidebar panel
     # hass.components.frontend.async_register_built_in_panel(
-    #     component_name="iframe",  # Use iframe to embed the view
-    #     sidebar_title="Eltako",  # Title in the sidebar
-    #     sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
-    #     frontend_url_path="eltako",  # URL in the sidebar
-        
+    #     component_name="iframe",  # Use "iframe" to embed the custom view
+    #     sidebar_title="Eltako",  # Title shown in the sidebar
+    #     sidebar_icon="mdi:bus-electric",  # Icon for the sidebar
+    #     frontend_url_path="",  # URL path for the sidebar
     #     config={
-    #         "url": "http://localhost:5173"  # URL served by the view
+    #         "url": "/eltako"  # Path to your custom view
     #     },
-    #     require_admin=True,
+    #     require_admin=True  # Whether the panel requires admin privileges
     # )
+        
+
+    hass.components.frontend.async_register_built_in_panel(
+        component_name="iframe",  # Use iframe to embed the view
+        sidebar_title="Eltako",  # Title in the sidebar
+        sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
+        frontend_url_path="eltako",  # URL in the sidebar
+        
+        config={
+            "url": "http://localhost:5173"  # URL served by the view
+        },
+        require_admin=True,
+    )
 
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
 
