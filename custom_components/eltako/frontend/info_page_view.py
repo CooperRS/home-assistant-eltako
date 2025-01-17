@@ -4,8 +4,8 @@ from homeassistant.components.http import HomeAssistantView
 class InfoPageView(HomeAssistantView):
     """Serve a custom page."""
 
-    url = "/eltako"
-    name = "eltako"
+    url = "/api/eltako/redirect"
+    name = "api:eltako:redirect"
     requires_auth = True
 
     async def get(self, request):
