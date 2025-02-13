@@ -38,10 +38,6 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
 
     # Read the config
     LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
-    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
-    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
-    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
-    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
     # config = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
     # LOGGER.debug(f"[{LOG_PREFIX_INIT}] Config: {config}")
     # hass.data[DATA_ELTAKO] = hass.data.setdefault(DATA_ELTAKO, {})
@@ -137,6 +133,7 @@ def migrate_old_gateway_descriptions(hass: HomeAssistant):
             hass.data[DATA_ELTAKO][key] = migration_dict[key]
 
     LOGGER.debug(f"[{LOG_PREFIX_INIT}] Migration routine completed.")
+
 
 def get_gateway_from_hass(hass: HomeAssistant, config_entry: ConfigEntry) -> EnOceanGateway:
 
