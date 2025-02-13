@@ -66,7 +66,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     # )
         
     if general_settings[CONF_FRONTEND_ENABELED] == 'dev':
-
+        # Use separately running dev server
         hass.components.frontend.async_register_built_in_panel(
             component_name="iframe",  # Use iframe to embed the view
             sidebar_title="Eltako",  # Title in the sidebar
@@ -80,7 +80,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         )
 
     else:
-        
+        # Include frontend from library
         StaticPathConfig(
             "home-assistant-eltako-frontend",
             path=eltako_frontend.locate_dir(),
