@@ -26,7 +26,7 @@ import home_assistant_eltako_frontend as eltako_frontend
 
 LOG_PREFIX_INIT = "Eltako Integration Setup"
 
-async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     """Set up the Eltako component."""
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Initialize Home Assistant Eltako Integration: https://github.com/grimmpp/home-assistant-eltako")
 
