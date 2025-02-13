@@ -38,10 +38,10 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
 
     # Read the config
     LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
-    config = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
-    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Config: {config}")
+    # config = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
+    # LOGGER.debug(f"[{LOG_PREFIX_INIT}] Config: {config}")
     hass.data[DATA_ELTAKO] = hass.data.setdefault(DATA_ELTAKO, {})
-    hass.data[DATA_ELTAKO][ELTAKO_CONFIG] = config
+    hass.data[DATA_ELTAKO][ELTAKO_CONFIG] = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
     general_settings = config_helpers.get_general_settings_from_configuration(hass)
 
     if general_settings[CONF_FRONTEND_ENABLED] == 'False': return
