@@ -36,7 +36,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     # Migrage existing gateway configs / ESP2 was removed in the name
     migrate_old_gateway_descriptions(hass)
 
-
+    # Read the config
+    config = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
+    eltako_data = hass.data.setdefault(DATA_ELTAKO, {})
+    eltako_data[ELTAKO_CONFIG] = config
     general_settings = config_helpers.get_general_settings_from_configuration(hass)
     if general_settings[CONF_FRONTEND_ENABELED] == 'False': return
 
