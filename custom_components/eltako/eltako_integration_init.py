@@ -40,11 +40,11 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
     # config = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
     # LOGGER.debug(f"[{LOG_PREFIX_INIT}] Config: {config}")
-    hass.data[DATA_ELTAKO] = hass.data.setdefault(DATA_ELTAKO, {})
-    hass.data[DATA_ELTAKO][ELTAKO_CONFIG] = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
-    general_settings = config_helpers.get_general_settings_from_configuration(hass)
+    # hass.data[DATA_ELTAKO] = hass.data.setdefault(DATA_ELTAKO, {})
+    # hass.data[DATA_ELTAKO][ELTAKO_CONFIG] = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
+    # general_settings = config_helpers.get_general_settings_from_configuration(hass)
 
-    if general_settings[CONF_FRONTEND_ENABLED] == 'False': return
+    # if general_settings[CONF_FRONTEND_ENABLED] == 'False': return
 
     LOGGER.info("f[{LOG_PREFIX_INIT}] register websocket extension.")
     await register_websockets(hass, config_type)
@@ -70,7 +70,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     #     require_admin=True  # Whether the panel requires admin privileges
     # )
         
-    if general_settings[CONF_FRONTEND_ENABLED] == 'dev':
+    if False: #general_settings[CONF_FRONTEND_ENABLED] == 'dev':
         # Use separately running dev server
         hass.components.frontend.async_register_built_in_panel(
             component_name="iframe",  # Use iframe to embed the view
