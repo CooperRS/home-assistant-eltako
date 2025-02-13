@@ -38,6 +38,10 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
 
     # Read the config
     LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
+    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
+    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
+    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
+    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load Config")
     # config = await config_helpers.async_get_home_assistant_config(hass, CONFIG_SCHEMA)
     # LOGGER.debug(f"[{LOG_PREFIX_INIT}] Config: {config}")
     # hass.data[DATA_ELTAKO] = hass.data.setdefault(DATA_ELTAKO, {})
@@ -46,7 +50,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
 
     # if general_settings[CONF_FRONTEND_ENABLED] == 'False': return
 
-    LOGGER.info("f[{LOG_PREFIX_INIT}] register websocket extension.")
+    LOGGER.info("f[{LOG_PREFIX_INIT}] Register websocket extension.")
     await register_websockets(hass, config_type)
 
     # hass.http.register_static_path(
