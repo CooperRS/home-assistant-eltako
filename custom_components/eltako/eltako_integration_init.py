@@ -136,6 +136,7 @@ def migrate_old_gateway_descriptions(hass: HomeAssistant):
         for key in migration_dict:
             hass.data[DATA_ELTAKO][key] = migration_dict[key]
 
+    LOGGER.debug(f"[{LOG_PREFIX_INIT}] Migration routine completed.")
 
 def get_gateway_from_hass(hass: HomeAssistant, config_entry: ConfigEntry) -> EnOceanGateway:
 
