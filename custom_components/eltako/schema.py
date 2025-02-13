@@ -80,7 +80,8 @@ class GeneralSettings(EltakoPlatformSchema):
     ENTITY_SCHEMA = vol.Schema({
             vol.Optional(CONF_FAST_STATUS_CHANGE, default=False): cv.boolean,
             vol.Optional(CONF_SHOW_DEV_ID_IN_DEV_NAME, default=False): cv.boolean,
-        })
+            vol.Optional(CONF_FRONTEND_ENABELED, default="False"): vol.All(cv.ensure_list, ["False", "Dev", "True"])
+    })
     
     @classmethod
     def get_id(cls) -> str:

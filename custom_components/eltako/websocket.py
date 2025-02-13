@@ -2,6 +2,7 @@ import json
 import os
 from .const import *
 
+from homeassistant.helpers.dispatcher import async_dispatcher_connect, dispatcher_send
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.components import websocket_api
@@ -49,7 +50,6 @@ def _get_configured_gateways(hass: HomeAssistant):
             })
     return result
 
-
 @websocket_api.websocket_command({
     'type': 'eltako/info',
     'required': []
@@ -89,3 +89,16 @@ async def ws_configured_gateways(hass: HomeAssistant, connection, msg):
 
     # Send the response back
     connection.send_message(websocket_api.result_message(msg['id'], response))
+
+
+class ShaddowDataManager():
+
+    def __init__(self, hass):
+        self.hass = hass
+        self.configuration = []
+        self.detected_devices = []
+
+        self.dispatcher_disconnect_handle = async_dispatcher_connect(
+            self.hass, ELTAKO_GLOBAL_EVENT_BUS_ID, self._forward_message
+        )
+

@@ -8,6 +8,7 @@ from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.dispatcher import dispatcher_connect
 from homeassistant.helpers.reload import async_reload_integration_platforms
 from homeassistant.components.frontend import async_register_built_in_panel
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.components import panel_custom, websocket_api
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er, device_registry as dr, entity_platform as pl
@@ -21,6 +22,8 @@ from .gateway import *
 from .frontend.info_page_view import InfoPageView
 from .websocket import register_websockets
 
+import home_assistant_eltako_frontend as eltako_frontend
+
 LOG_PREFIX_INIT = "Eltako Integration Setup"
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -33,6 +36,9 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     # Migrage existing gateway configs / ESP2 was removed in the name
     migrate_old_gateway_descriptions(hass)
 
+
+    general_settings = config_helpers.get_general_settings_from_configuration(hass)
+    if general_settings[CONF_FRONTEND_ENABELED] == 'False': return
 
     LOGGER.info("f[{LOG_PREFIX_INIT}] register websocket extension.")
 
@@ -59,18 +65,27 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     #     require_admin=True  # Whether the panel requires admin privileges
     # )
         
+    if general_settings[CONF_FRONTEND_ENABELED] == 'dev':
 
-    hass.components.frontend.async_register_built_in_panel(
-        component_name="iframe",  # Use iframe to embed the view
-        sidebar_title="Eltako",  # Title in the sidebar
-        sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
-        frontend_url_path="eltako",  # URL in the sidebar
+        hass.components.frontend.async_register_built_in_panel(
+            component_name="iframe",  # Use iframe to embed the view
+            sidebar_title="Eltako",  # Title in the sidebar
+            sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
+            frontend_url_path="eltako",  # URL in the sidebar
+            
+            config={
+                "url": "http://localhost:5173"  # URL served by the view
+            },
+            require_admin=True,
+        )
+
+    else:
         
-        config={
-            "url": "http://localhost:5173"  # URL served by the view
-        },
-        require_admin=True,
-    )
+        StaticPathConfig(
+            "home-assistant-eltako-frontend",
+            path=eltako_frontend.locate_dir(),
+            cache_headers=False
+        )
 
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
 
