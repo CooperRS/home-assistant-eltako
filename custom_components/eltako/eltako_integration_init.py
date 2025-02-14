@@ -90,7 +90,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         local_file_index = os.path.join(local_path, "static", 'index.html')
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.exists(local_file_index)}")
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.isfile(local_file_index)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {__file__} - {os.path.exists(__file__)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
         # Include frontend from library
