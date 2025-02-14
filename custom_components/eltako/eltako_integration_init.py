@@ -88,17 +88,17 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         local_path = os.path.join(eltako_frontend.locate_dir(), "static")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
         # Include frontend from library
-        # StaticPathConfig(
-        #     "/eltako",
-        #     path=local_path,
-        #     cache_headers=False
-        # )
-
-        await hass.http.register_static_path(
+        StaticPathConfig(
             "/eltako",
-            local_path,
-            cache_headers=False,
+            path=local_path,
+            cache_headers=False
         )
+
+        # hass.http.register_static_path(
+        #     "/eltako",
+        #     local_path,
+        #     cache_headers=False,
+        # )
 
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] {local_path}/index.html  - {os.path.isfile(local_path+"/index.html")} \n { '\n'.join([f.path for f in os.scandir(local_path) if f.is_dir()]) }")
 
