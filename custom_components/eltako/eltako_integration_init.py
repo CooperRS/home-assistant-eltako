@@ -99,7 +99,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
         # Include frontend from library
         StaticPathConfig(
-            "/eltako",
+            "/home_assistant_eltako_frontend",
             path=local_path,
             cache_headers=False
         )
