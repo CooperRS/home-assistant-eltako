@@ -85,10 +85,12 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         )
 
     else:
-        local_path = os.path.join(eltako_frontend.locate_dir(), "static")
-        local_file = eltako_frontend.__file__
-        local_path2 = eltako_frontend.__path__
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {local_file} - local path 2 {local_path2}")
+        local_path = eltako_frontend.locate_dir()
+        local_path_static = os.path.join(local_path, "static")
+        local_file_index = os.path.join(local_path, "static", 'index.html')
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.isfile(local_path)}")
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.isfile(local_path_static)}")
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.isfile(local_file_index)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
         # Include frontend from library
         StaticPathConfig(
@@ -103,7 +105,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         #     cache_headers=False,
         # )
 
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] {local_path}/index.html  - {os.path.isfile(local_path+"/index.html")} \n { '\n'.join([f.path for f in os.scandir(local_path) if f.is_dir()]) }")
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] {local_path}/index.html  - {os.path.isfile(local_path+"/index.html")} \n ")
 
         await panel_custom.async_register_panel(
             hass=hass,
