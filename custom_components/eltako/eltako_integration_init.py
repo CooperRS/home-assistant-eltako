@@ -100,7 +100,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             cache_headers=False,
         )
 
-        panel_custom.async_register_panel(
+        await panel_custom.async_register_panel(
             hass=hass,
             frontend_url_path=DOMAIN,
             webcomponent_name=eltako_frontend.webcomponent_name,
