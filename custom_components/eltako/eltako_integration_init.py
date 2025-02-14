@@ -90,7 +90,10 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         local_file_index = os.path.join(local_path, "static", 'index.html')
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static list subdir {os.listdir(local_path_static)}")
+        
+
+        await hass.async_add_executor_job(print_subfolders, local_path_static)
+
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.isfile(local_file_index)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {__file__} - {os.path.exists(__file__)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
@@ -115,6 +118,9 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
 
     return True
+
+def print_subfolders(folder: str):
+    LOGGER.debug(f"[{LOG_PREFIX_INIT}] print subfolders of '{folder}':  \n  {os.listdir(folder)}")
 
 def print_config_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> None:
     LOGGER.debug("ConfigEntry")
