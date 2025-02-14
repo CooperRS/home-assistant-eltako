@@ -87,7 +87,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     else:
         local_path = eltako_frontend.locate_dir()
         local_path_static = os.path.join(local_path, "static")
-        local_file_index = os.path.join(local_path, "static", 'index.html')
+        local_file_index = os.path.join(local_path, "static", "static", 'index.html')
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
         
