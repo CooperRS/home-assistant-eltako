@@ -86,7 +86,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
 
     else:
         local_path = eltako_frontend.locate_dir()
-        local_path_static = os.path.join(local_path, "static")
+        local_path_static = os.path.join(local_path, "static", "static")
         local_file_index = os.path.join(local_path, "static", "static", 'index.html')
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
@@ -100,18 +100,18 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         # Include frontend from library
         await hass.http.async_register_static_paths([
             StaticPathConfig(
-                "/home_assistant_eltako_frontend",
-                path=local_path,
+                "/eltako",
+                path=local_path_static,
                 cache_headers=True
             )])
 
         await panel_custom.async_register_panel(
             hass=hass,
             frontend_url_path=DOMAIN,
-            webcomponent_name="home_assistant_eltako_frontend",
+            webcomponent_name="eltako",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            module_url="home_assistant_eltako_frontend/static/static/index.html",
+            module_url="index.html",
             embed_iframe=True,
             require_admin=True,
         )
