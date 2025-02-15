@@ -98,11 +98,12 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {__file__} - {os.path.exists(__file__)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
         # Include frontend from library
-        StaticPathConfig(
-            "/home_assistant_eltako_frontend",
-            path=local_path,
-            cache_headers=True
-        )
+        await hass.http.async_register_static_paths([
+            StaticPathConfig(
+                "/home_assistant_eltako_frontend",
+                path=local_path,
+                cache_headers=True
+            )])
 
         await panel_custom.async_register_panel(
             hass=hass,
