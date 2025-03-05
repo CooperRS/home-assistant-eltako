@@ -45,6 +45,10 @@ async def async_setup_entry(
                 LOGGER.warning("[%s %s] Could not load configuration", platform, str(dev_config.id))
                 LOGGER.critical(e, exc_info=True)
         
+    # add for every gateway
+    platform = Platform.SELECT
+    entities.append(RepeaterMode(platform, gateway))
+
     validate_actuators_dev_and_sender_id(entities)
     log_entities_to_be_added(entities, platform)
     async_add_entities(entities)
@@ -98,6 +102,65 @@ class ClimatePriority(EltakoEntity, SelectEntity, RestoreEntity):
         LOGGER.debug(f"[{self._attr_ha_platform} {self.dev_id}] Send event id: '{self.event_id}' data: '{option}'")
 
         self.hass.bus.fire(self.event_id, { "priority": option })
+
+        self._attr_current_option = option
+        self.schedule_update_ha_state()
+
+
+class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
+    """Defines priority for controlling heating actuators"""
+
+    DEFAULT_REPEATER_MODE = "None"
+
+    def __init__(self, platform: str, gateway: EnOceanGateway):
+
+        super().__init__(platform, gateway, dev_id=AddressExpression.parse('00-00-00-00'), dev_name="Repeater_Mode", dev_eep=None)
+
+        self.name = "Repeater Mode"
+
+        self._attr_options = ["None", "Level 1", "Level 2"]
+        self._attr_current_option = "None"
+        
+
+    def load_value_initially(self, latest_state:State):
+        LOGGER.debug(f"[{self._attr_ha_platform} {self.dev_id}] latest state - state: {latest_state.state}")
+        LOGGER.debug(f"[{self._attr_ha_platform} {self.dev_id}] latest state - attributes: {latest_state.attributes}")
+        try:
+            self._attr_current_option = latest_state.state
+            if self._attr_current_option in [None, 'unknown']:
+                self._attr_current_option = self.DEFAULT_REPEATER_MODE
+                
+        except Exception as e:
+            self._attr_current_option = self.DEFAULT_REPEATER_MODE
+            raise e
+        
+        ## send value to initially set value of climate controller
+        self.gateway.request_repeater_mode()
+
+        self.schedule_update_ha_state()
+
+        LOGGER.debug(f"[{self._attr_ha_platform} {self.dev_id}] value initially loaded: [state: {self.state}]")
+
+
+    async def receive_bus_update(self, mode:int) -> None:
+        option = "None"
+        if mode == 1: option = "Level 1"
+        if mode == 2: option = "Level 2"
+
+        self._attr_current_option = option
+        self.schedule_update_ha_state()
+
+
+    async def async_select_option(self, option: str) -> None:
+        """Change the selected option."""
+
+        LOGGER.debug(f"[{self._attr_ha_platform} {self.dev_id}] selected option: {option}")
+
+        level = 0
+        if option == "Level 1": level = 1
+        if option == "Level 2": level = 2
+
+        self.gateway.set_repeater_mode(level)
 
         self._attr_current_option = option
         self.schedule_update_ha_state()

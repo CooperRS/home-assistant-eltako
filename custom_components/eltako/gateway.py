@@ -79,6 +79,7 @@ class EnOceanGateway:
         self._last_message_received_handler = None
         self._connection_state_handlers = []
         self._base_id_change_handlers = []
+        self._repeater_mode_change_handlers = []
         self._received_message_count_handler = None
 
         self._attr_model = GATEWAY_DEFAULT_NAME + " - " + self.dev_type.upper()
@@ -122,6 +123,15 @@ class EnOceanGateway:
         for handler in self._base_id_change_handlers:
             self.hass.create_task(
                 handler(base_id)
+            )
+
+    def add_repeater_mode_change_handler(self, handler):
+        self._repeater_mode_change_handlers.append(handler)
+
+    def _fire_repeater_mode_change_handlers(self, mode: int):
+        for handler in self._repeater_mode_change_handlers:
+            self.hass.create_task(
+                handler(mode)
             )
 
     def add_connection_state_changed_handler(self, handler):
@@ -359,6 +369,15 @@ class EnOceanGateway:
             self.dispatcher_disconnect_handle()
             self.dispatcher_disconnect_handle = None
 
+    def request_repeater_mode(self):
+        self.hass.create_task(
+            self._bus.send_repeater_mode_request()
+        )
+
+    def set_repeater_mode(self, mode):
+        self.hass.create_task(
+            self._bus.send_repeater_mode_request()
+        )
 
     def _callback_send_message_to_serial_bus(self, msg):
         """Callback method call from HA when receiving events from serial bus."""
@@ -367,6 +386,7 @@ class EnOceanGateway:
                 LOGGER.debug("[Gateway] [Id: %d] Send message: %s - Serialized: %s", self.dev_id, msg, msg.serialize().hex())
 
                 # put message on serial bus
+                # TODO: maybe it makes sense to filter for matching base id. currently all gateways try to send message but only those where base id matches do actually send. FAM14 and FGW14-USB will receive any message.
                 self.hass.create_task(
                     self._bus.send(msg)
                 )
@@ -387,11 +407,17 @@ class EnOceanGateway:
             local_message = None
             self.report_message_stats()
 
+            # received base id
             if message.body[:2] == b'\x8b\x98':
                 LOGGER.debug("[Gateway] [Id: %d] Received base id: %s", self.dev_id, b2s(message.body[2:6]))
                 self._attr_base_id = AddressExpression( (message.body[2:6], None) )
                 self._fire_base_id_change_handlers(self.base_id)
 
+            # received repeater mode
+            if message.body[:2] == b'\x8b\x99':
+                LOGGER.debug("[Gateway] [Id: %d] Received Repeater mode: Filter %s, Level %s", self.dev_id, b2s(message.body[2:3]), b2s(message.body[3:4]))
+                self._attr_base_id = AddressExpression( (message.body[2:6], None) )
+                self._fire_repeater_mode_change_handlers(message.body[3:4])
 
             # only send messages to HA when base id is known
             if int.from_bytes(self.base_id[0]) != 0:
