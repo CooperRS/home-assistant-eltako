@@ -120,6 +120,17 @@ class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
 
         self._attr_options = ["None", "Level 1", "Level 2"]
         self._attr_current_option = "None"
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return the device info."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, self.gateway.serial_path)},
+            name= self.gateway.dev_name,
+            manufacturer=MANUFACTURER,
+            model=self.gateway.model,
+            via_device=(DOMAIN, self.gateway.serial_path)
+        )
         
 
     def load_value_initially(self, latest_state:State):
