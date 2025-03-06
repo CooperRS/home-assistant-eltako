@@ -154,7 +154,7 @@ class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
         LOGGER.debug(f"[{self._attr_ha_platform} {self.unique_id}] value initially loaded: [state: {self.state}]")
 
 
-    async def receive_bus_update(self, mode:int) -> None:
+    def receive_bus_update(self, mode:int) -> None:
         option = "None"
         if mode == 1: option = "Level 1"
         if mode == 2: option = "Level 2"
