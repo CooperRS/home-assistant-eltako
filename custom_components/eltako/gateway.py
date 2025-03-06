@@ -419,7 +419,7 @@ class EnOceanGateway:
             if message.body[:2] == b'\x8b\x99':
                 LOGGER.debug("[Gateway] [Id: %d] Received Repeater mode: Filter %s, Repeater Level %s", self.dev_id, b2s(message.body[2:3]), b2s(message.body[3:4]))
                 self._attr_base_id = AddressExpression( (message.body[2:6], None) )
-                self._fire_repeater_mode_change_handlers( int(message.body[3:4]) )
+                self._fire_repeater_mode_change_handlers( int.from_bytes(message.body[3:4]) )
 
             # only send messages to HA when base id is known
             if int.from_bytes(self.base_id[0]) != 0:

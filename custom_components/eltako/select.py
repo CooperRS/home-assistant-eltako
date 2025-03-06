@@ -120,7 +120,7 @@ class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
 
         self._attr_options = ["None", "Level 1", "Level 2"]
         self._attr_current_option = "None"
-        self.gateway.add_repeater_mode_change_handler(self.receive_bus_update)
+        self.gateway.add_repeater_mode_change_handler(self.async_receive_bus_update)
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -154,7 +154,7 @@ class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
         LOGGER.debug(f"[{self._attr_ha_platform} {self.unique_id}] value initially loaded: [state: {self.state}]")
 
 
-    def receive_bus_update(self, mode:int) -> None:
+    async def async_receive_bus_update(self, mode:int) -> None:
         option = "None"
         if mode == 1: option = "Level 1"
         if mode == 2: option = "Level 2"
