@@ -376,6 +376,7 @@ class EnOceanGateway:
 
     def set_repeater_mode(self, mode):
         self.hass.create_task(
+            # self._bus.send_repeater_mode(mode)
             self._bus.send_repeater_mode_request()
         )
 
