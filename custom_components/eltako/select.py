@@ -120,6 +120,7 @@ class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
 
         self._attr_options = ["None", "Level 1", "Level 2"]
         self._attr_current_option = "None"
+        self.gateway.add_repeater_mode_change_handler(self.receive_bus_update)
 
     @property
     def device_info(self) -> DeviceInfo:
