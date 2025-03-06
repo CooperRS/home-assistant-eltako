@@ -280,6 +280,8 @@ class EnOceanGateway:
             LOGGER.debug("[Gateway] [Id: %d] Connection stopped", self.dev_id)
             self._init_bus()
             self._bus.start()
+
+            self.request_repeater_mode()
         except Exception as e:
             LOGGER.exception(f"[Gateway] [Id: {self.dev_id}] {e}")
 

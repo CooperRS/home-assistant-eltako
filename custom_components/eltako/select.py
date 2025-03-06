@@ -151,7 +151,7 @@ class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
 
         self.schedule_update_ha_state()
 
-        LOGGER.debug(f"[{self._attr_ha_platform} {self.dev_id}] value initially loaded: [state: {self.state}]")
+        LOGGER.debug(f"[{self._attr_ha_platform} {self.unique_id}] value initially loaded: [state: {self.state}]")
 
 
     async def receive_bus_update(self, mode:int) -> None:
@@ -166,7 +166,7 @@ class RepeaterMode(EltakoEntity, SelectEntity, RestoreEntity):
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
 
-        LOGGER.debug(f"[{self._attr_ha_platform} {self.dev_id}] selected option: {option}")
+        LOGGER.debug(f"[{self._attr_ha_platform} {self.unique_id}] selected option: {option}")
 
         level = 0
         if option == "Level 1": level = 1
