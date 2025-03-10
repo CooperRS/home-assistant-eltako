@@ -100,7 +100,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         # Include frontend from library
         await hass.http.async_register_static_paths([
             StaticPathConfig(
-                "eltako",
+                "/eltako",
                 path=local_path_static,
                 cache_headers=True
             )])
