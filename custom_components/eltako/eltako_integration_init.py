@@ -104,7 +104,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
                 "/eltako",
                 # path=local_path_static,
                 path= os.path.join(os.path.dirname(__file__), 'frontend'),
-                cache_headers=True
+                cache_headers=False
             )])
 
         await panel_custom.async_register_panel(
@@ -113,7 +113,10 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             webcomponent_name="home-assistant-eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            module_url="/eltako/index.html",
+            # module_url="/eltako/index.html",
+            config={
+                "url": "/eltako"  # Path to your custom view
+            },
             embed_iframe=True,
             require_admin=False,
         )
