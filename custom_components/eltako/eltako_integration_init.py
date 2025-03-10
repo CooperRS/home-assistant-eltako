@@ -104,7 +104,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         # Include frontend from library
         await hass.http.async_register_static_paths([
             StaticPathConfig(
-                "/eltako",
+                "/eltako_static",
                 # path=local_path_static,
                 path= os.path.join(os.path.dirname(__file__), "frontend"),
                 cache_headers=False
@@ -116,7 +116,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             webcomponent_name="home-assistant-eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            html_url="/eltako/index.html",
+            module_url="/eltako_static/index.html",
             embed_iframe=False,
             require_admin=False,
             config_panel_domain=DOMAIN,
