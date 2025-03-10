@@ -98,12 +98,15 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.isfile(local_file_index)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {__file__} - {os.path.exists(__file__)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
+
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local frontend index.html {__file__} - {os.path.exists(os.path.join(os.path.dirname(__file__), "frontend"))}")
+
         # Include frontend from library
         await hass.http.async_register_static_paths([
             StaticPathConfig(
                 "/eltako",
                 # path=local_path_static,
-                path= os.path.join(os.path.dirname(__file__), 'frontend'),
+                path= os.path.join(os.path.dirname(__file__), "frontend"),
                 cache_headers=False
             )])
 
@@ -113,12 +116,10 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             webcomponent_name="home-assistant-eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            # module_url="/eltako/index.html",
-            config={
-                "url": "/eltako"  # Path to your custom view
-            },
-            embed_iframe=True,
+            module_url="/eltako/index.html",
+            embed_iframe=False,
             require_admin=False,
+            config_panel_domain=DOMAIN,
         )
 
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
