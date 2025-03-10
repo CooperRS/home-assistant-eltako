@@ -91,6 +91,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
         
+        
 
         await hass.async_add_executor_job(print_subfolders, local_path_static)
 
@@ -101,7 +102,8 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         await hass.http.async_register_static_paths([
             StaticPathConfig(
                 "/eltako",
-                path=local_path_static,
+                # path=local_path_static,
+                path= os.path.join(os.path.dirname(__file__), 'frontend')
                 cache_headers=True
             )])
 
