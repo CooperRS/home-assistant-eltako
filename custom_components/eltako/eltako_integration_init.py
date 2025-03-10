@@ -103,7 +103,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             StaticPathConfig(
                 "/eltako",
                 # path=local_path_static,
-                path= os.path.join(os.path.dirname(__file__), 'frontend')
+                path= os.path.join(os.path.dirname(__file__), 'frontend'),
                 cache_headers=True
             )])
 
