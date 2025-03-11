@@ -121,7 +121,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
             module_url="/eltako_static/static/index.html",
-            embed_iframe=False,
+            embed_iframe=True,
             require_admin=False,
             config_panel_domain=DOMAIN,
         )
