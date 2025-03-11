@@ -119,10 +119,10 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             webcomponent_name="home-assistant-eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            module_url="eltako/index.html",
+            module_url="/eltako/index.html",
             embed_iframe=True,
             require_admin=True,
-            config_panel_domain=DOMAIN,
+            # config_panel_domain=DOMAIN,
         )
 
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
