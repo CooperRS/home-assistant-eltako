@@ -12,6 +12,7 @@ from homeassistant.components.http import StaticPathConfig
 from homeassistant.components import panel_custom, websocket_api
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er, device_registry as dr, entity_platform as pl
+import pkg_resources
 
 
 from .const import *
@@ -101,12 +102,15 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
 
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] local frontend index.html {__file__} - {os.path.exists(os.path.join(os.path.dirname(__file__), "frontend"))}")
 
+        static_path = pkg_resources.resource_filename("home_assistant_eltako_frontend", "static")
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from resource_filename: {static_path}")
+
         # Include frontend from library
         await hass.http.async_register_static_paths([
             StaticPathConfig(
                 "/eltako_static",
-                # path=local_path_static,
-                path= os.path.join(os.path.dirname(__file__), "frontend"),
+                path=static_path,
+                # path= os.path.join(os.path.dirname(__file__), "frontend"),
                 cache_headers=False
             )])
 
@@ -116,7 +120,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             webcomponent_name="home-assistant-eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            module_url="/eltako_static/index.html",
+            module_url="/eltako_static/static/index.html",
             embed_iframe=False,
             require_admin=False,
             config_panel_domain=DOMAIN,
