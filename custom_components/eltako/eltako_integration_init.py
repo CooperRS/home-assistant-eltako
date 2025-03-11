@@ -86,21 +86,21 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         )
 
     else:
-        local_path = eltako_frontend.locate_dir()
-        local_path_static = os.path.join(local_path, "static", "static")
-        local_file_index = os.path.join(local_path, "static", "static", 'index.html')
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
+        # local_path = eltako_frontend.locate_dir()
+        # local_path_static = os.path.join(local_path, "static", "static")
+        # local_file_index = os.path.join(local_path, "static", "static", 'index.html')
+        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
+        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
         
         
 
-        await hass.async_add_executor_job(print_subfolders, local_path_static)
+        # await hass.async_add_executor_job(print_subfolders, local_path_static)
 
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.isfile(local_file_index)}")
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {__file__} - {os.path.exists(__file__)}")
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
+        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.isfile(local_file_index)}")
+        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {__file__} - {os.path.exists(__file__)}")
+        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
 
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] local frontend index.html {__file__} - {os.path.exists(os.path.join(os.path.dirname(__file__), "frontend"))}")
+        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local frontend index.html {__file__} - {os.path.exists(os.path.join(os.path.dirname(__file__), "frontend"))}")
 
         static_path = pkg_resources.resource_filename("home_assistant_eltako_frontend", "static")
         LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from resource_filename: {static_path}")
@@ -110,7 +110,6 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             StaticPathConfig(
                 "/eltako_static",
                 path=static_path,
-                # path= os.path.join(os.path.dirname(__file__), "frontend"),
                 cache_headers=False
             )])
 
@@ -120,7 +119,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             webcomponent_name="home-assistant-eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            module_url="/eltako_static/static/index.html",
+            module_url="/eltako_static/index.html",
             embed_iframe=True,
             require_admin=False,
             config_panel_domain=DOMAIN,
