@@ -120,7 +120,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             webcomponent_name="eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
-            module_url="/eltako/entrypoint.js", 
+            module_url="/eltako/assets/index-BYw5rWpL.js", 
                 config={
                 "url": "/eltako"  # Path to your custom view
             },
