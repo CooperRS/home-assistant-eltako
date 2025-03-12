@@ -72,7 +72,11 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     # )
     
     if general_settings[CONF_ENABLE_FRONTEND]:
+        LOGGER.debug(f"[{LOG_PREFIX_INIT}] Enable and register frontend.")
+
         if len(general_settings[CONF_FRONTEND_DEV_URL]) > 0:
+            LOGGER.debug(f"[{LOG_PREFIX_INIT}] Link frontend of dev server: {general_settings[CONF_FRONTEND_DEV_URL]}")
+
             # Use separately running dev server
             hass.components.frontend.async_register_built_in_panel(
                 component_name="iframe",  # Use iframe to embed the view
