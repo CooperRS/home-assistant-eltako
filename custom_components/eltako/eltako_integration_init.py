@@ -115,7 +115,7 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
                 config={
                     "url": "/eltako"  # Path to your custom view
                 },
-                embed_iframe=True,
+                embed_iframe=False,
                 require_admin=False,
                 # config_panel_domain=DOMAIN,
             )
