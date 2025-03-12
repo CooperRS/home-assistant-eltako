@@ -116,7 +116,8 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
         await panel_custom.async_register_panel(
             hass=hass,
             frontend_url_path="eltako",
-            webcomponent_name="home-assistant-eltako-frontend",
+            # webcomponent_name="home-assistant-eltako-frontend",
+            webcomponent_name="eltako-frontend",
             sidebar_title="eltako",
             sidebar_icon="mdi:bus-electric",
             module_url="/eltako/entrypoint.js", 
