@@ -45,8 +45,6 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     hass.data[DATA_ELTAKO][ELTAKO_CONFIG] = config
     general_settings = config_helpers.get_general_settings_from_configuration(hass)
 
-    # if general_settings[CONF_FRONTEND_ENABLED] == 'False': return
-
     LOGGER.info("f[{LOG_PREFIX_INIT}] Register websocket extension.")
     await register_websockets(hass, config_type)
 
