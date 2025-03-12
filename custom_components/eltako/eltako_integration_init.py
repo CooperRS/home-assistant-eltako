@@ -70,64 +70,49 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
     #     },
     #     require_admin=True  # Whether the panel requires admin privileges
     # )
-        
-    if False: #general_settings[CONF_FRONTEND_ENABLED] == 'dev':
-        # Use separately running dev server
-        hass.components.frontend.async_register_built_in_panel(
-            component_name="iframe",  # Use iframe to embed the view
-            sidebar_title="Eltako",  # Title in the sidebar
-            sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
-            frontend_url_path="eltako",  # URL in the sidebar
-            
-            config={
-                "url": "http://localhost:5173"  # URL served by the view
-            },
-            require_admin=True,
-        )
+    
+    if general_settings[CONF_ENABLE_FRONTEND]:
+        if len(general_settings[CONF_FRONTEND_DEV_URL]) > 0:
+            # Use separately running dev server
+            hass.components.frontend.async_register_built_in_panel(
+                component_name="iframe",  # Use iframe to embed the view
+                sidebar_title="Eltako",  # Title in the sidebar
+                sidebar_icon="mdi:bus-electric", # mdi:view-dashboard",  # Icon for the sidebar
+                frontend_url_path="eltako",  # URL in the sidebar
+                
+                config={
+                    # "url": "http://localhost:5173"  # URL served by the view
+                    "url": general_settings[CONF_FRONTEND_DEV_URL]  # URL served by the view
+                },
+                require_admin=True,
+            )
 
-    else:
-        # local_path = eltako_frontend.locate_dir()
-        # local_path_static = os.path.join(local_path, "static", "static")
-        # local_file_index = os.path.join(local_path, "static", "static", 'index.html')
-        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path {local_path} - {os.path.exists(local_path)}")
-        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local path static {local_path_static} - {os.path.exists(local_path_static)}")
-        
-        
+        else:
+            static_path = pkg_resources.resource_filename("home_assistant_eltako_frontend", "static")
+            LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from resource_filename: {static_path}")
 
-        # await hass.async_add_executor_job(print_subfolders, local_path_static)
+            # Include frontend from library
+            await hass.http.async_register_static_paths([
+                StaticPathConfig(
+                    "/eltako",
+                    path=static_path,
+                    cache_headers=False
+                )])
 
-        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file index {local_file_index} - {os.path.isfile(local_file_index)}")
-        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local file {__file__} - {os.path.exists(__file__)}")
-        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from library {local_path}")
-
-        # LOGGER.debug(f"[{LOG_PREFIX_INIT}] local frontend index.html {__file__} - {os.path.exists(os.path.join(os.path.dirname(__file__), "frontend"))}")
-
-        static_path = pkg_resources.resource_filename("home_assistant_eltako_frontend", "static")
-        LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from resource_filename: {static_path}")
-
-        # Include frontend from library
-        await hass.http.async_register_static_paths([
-            StaticPathConfig(
-                "/eltako",
-                path=static_path,
-                cache_headers=False
-            )])
-
-        await panel_custom.async_register_panel(
-            hass=hass,
-            frontend_url_path="eltako",
-            webcomponent_name=eltako_frontend.webcomponent_name,
-            sidebar_title="eltako",
-            sidebar_icon="mdi:bus-electric",
-            module_url=eltako_frontend.module_url, 
-            config={
-                "url": "/eltako"  # Path to your custom view
-            },
-            # module_url="/eltako/index.html"
-            embed_iframe=True,
-            require_admin=True,
-            # config_panel_domain=DOMAIN,
-        )
+            await panel_custom.async_register_panel(
+                hass=hass,
+                frontend_url_path="eltako",
+                webcomponent_name=eltako_frontend.webcomponent_name,
+                sidebar_title="eltako",
+                sidebar_icon="mdi:bus-electric",
+                module_url=eltako_frontend.module_url, 
+                config={
+                    "url": "/eltako"  # Path to your custom view
+                },
+                embed_iframe=True,
+                require_admin=True,
+                # config_panel_domain=DOMAIN,
+            )
 
     LOGGER.info(f"[{LOG_PREFIX_INIT}] Eltako Integration initiallized. ... loading device configuration")
 
