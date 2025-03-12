@@ -90,6 +90,8 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
             )
 
         else:
+            LOGGER.debug(f"[{LOG_PREFIX_INIT}] Register frontend and load from package 'home-assistant-eltako-frontend'.")
+
             static_path = pkg_resources.resource_filename("home_assistant_eltako_frontend", "static")
             LOGGER.debug(f"[{LOG_PREFIX_INIT}] Load static path from resource_filename: {static_path}")
 
@@ -100,6 +102,8 @@ async def async_setup(hass: HomeAssistant, config_type: ConfigType) -> bool:
                     path=static_path,
                     cache_headers=False
                 )])
+            
+            LOGGER.debug(f"[{LOG_PREFIX_INIT}] Register webcomponent '{eltako_frontend.webcomponent_name}' under '/eltako' with js module '{eltako_frontend.module_url}'")
 
             await panel_custom.async_register_panel(
                 hass=hass,
