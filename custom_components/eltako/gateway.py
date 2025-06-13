@@ -322,7 +322,7 @@ class EnOceanGateway:
         """
 
         if type(message) not in [EltakoPoll]:
-            LOGGER.debug("[Gateway] [Id: %d] Received message: %s", self.dev_id, message)
+            LOGGER.debug("[Gateway] [Id: %d] Received message: %s - Serialized: %s", self.dev_id, message, message.serialize().hex())
             self.process_messages()
 
             if isinstance(message, ESP2Message):
